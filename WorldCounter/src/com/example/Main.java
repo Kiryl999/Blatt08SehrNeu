@@ -1,38 +1,46 @@
 package com.example;
 
+/**
+ * Hauptklasse für das WordCount-Programm. Erstellt eine Instanz von WordCount,
+ * führt Wortzählung und -analyse durch und gibt Ergebnisse aus.
+ */
 public class Main {
+    /**
+     * Die Hauptmethode, die das WordCount Programm startet
+     * @param args werden hier nicht verwendet
+     * @throws IllegalArgumentException Wenn ein Fehler auftrettet
+     * @throws Exception Falls ein unbekannter Fehler auftretet
+     */
     public static void main(String[] args) {
 
-        WordCount test = new WordCount();
-        test.worldcounter();
+        try {
+            WordCount test = new WordCount("Grundgesetz.txt");
+            test.worldcounter();
+            String formatString = "| %-" + WordCount.MaxLange.length() + "s | %6s |%n";  
+            System.out.printf(formatString, "Wort", "Anzahl"); // Header
+
+            
+            for (String wort : test.getWords()) {
+                int count = test.getWordsCount(wort);
+                System.out.printf(formatString, wort, count);
+            }
+
+            
+            
+            // Methode 2 mit entrySet (Hier für keine anderen Methoden notwendig)
+            // for (Map.Entry<String, Integer> entry : unmodifiableMap.entrySet()) {
+            //     System.out.printf(formatString, entry.getKey(), entry.getValue());
+            // }
+
+        } catch(IllegalArgumentException | NullPointerException e) {
+            e.printStackTrace();
+
+        } catch (Exception e) {
+            System.out.println("Unbekannter Fehler!");
+            e.printStackTrace();
+        }
         
-       
-    
-        
+    // MacOS Homeverzeichnis kommen -> Finder und dann Shift + Cmd + H    
     }
 }
 
-/*
- * Wörter < 2 Buchstaben -> Kein Wort
- * Ausgabe in der API, welche Wörter und wie oft jeweils
- * Die IOException darf keinesfalls beim Zählen der Wörter gefangen werden! sonder:
- * Die ausführung des zählens abbrechen und zur main methode geworfen werden
- *   die ausgabe überspringen
- *   im catch block behandelt werden
- * 
- * 
- * Die Prüfung des gegebenen Pfades zu einer Textdatei umfasst folgende Schritte:
-    ◦ Gültiger String übergeben?
-    ◦ Ist das String-Argument ein Pfad zu einer regulären Datei (nicht
-    Verzeichnis oder anderes)?
-    ◦ Ist reguläre Datei lesbar?
-    Informationen zu einer Datei oder einem Verzeichnis liefert die Klasse File.
- * 
- *  Wörter dürfen nicht manipurlierbar sein und alph. sortiert
- * 
- * Behandlung von Ausnahmen: Wenn ein Wort nicht im Text vorkam: Wie lautet
-die korrekte Antwort auf die Frage, wie oft es vorkam?
-
-Wandeln Sie alle Wörter vor Verwendung als key und vor der Prüfung der
-Häufigkeit in Kleinbuchstaben um.
- */
